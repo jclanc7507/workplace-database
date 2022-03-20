@@ -7,12 +7,12 @@ values
 
 insert into roles (title, salary, department_id)
 values
-    ('Warehouse Worker', '40k', 2),
-    ('Forkflift Driver', '42k', 3),
-    ('Recruiting', '55k', 1),
-    ('Warehouse Assistant', '34k', 4),
-    ('Lead Warehouse Worker', '44k', 2),
-    ('Public Relations', '52k', 1);
+    ('Warehouse Worker', 40000, 2),
+    ('Forkflift Driver', 42000, 3),
+    ('Recruiting', 55000, 1),
+    ('Warehouse Assistant', 34000, 4),
+    ('Lead Warehouse Worker', 44000, 2),
+    ('Public Relations', 52000, 1);
 
 insert into employees (first_name, last_name, role_id, manager_id)
 values
