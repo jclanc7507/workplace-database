@@ -23,7 +23,7 @@ router.get('/employees', (req, res) => {
     });
 });
 
-// GET for individual employee via ID
+// GET an individual employee via ID
 router.get('/employee/:id', (req, res) => {
     const sql = `select employee.*, department.name
                  as department_name
@@ -49,13 +49,13 @@ router.get('/employee/:id', (req, res) => {
 router.post('/employee', ({ body }, res) => {
     const errors = inputCheck(
         body,
-        'id',
-        'first_name',
-        'last_name',
-        'role',
-        'department',
-        'salary',
-        'manager'
+            'id',
+            'first_name',
+            'last_name',
+            'role',
+            'department',
+            'salary',
+            'manager'
     );
     if (errors) {
         res.status(400).json({ error: errors });
@@ -127,7 +127,7 @@ router.delete('/employee/:id', (req, res) => {
             });
         } else {
             res.json({
-                message: 'deleted',
+                message: 'employee deleted',
                 changes: result.affectedRows,
                 id: req.params.id
             });
