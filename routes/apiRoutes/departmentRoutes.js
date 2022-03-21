@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../db/connection');
 const inputCheck = require('../../utils/inputCheck');
-const { route } = require('./employeeRoutes');
 
 // GET for all departments
 router.get('/departments', (req, res) => {
@@ -55,7 +54,7 @@ router.post('/department', ({ body }, res) => {
         body.name
     ];
 
-    db.query(sql, params, (err, results) => {
+    db.query(sql, params, (err, result) => {
         if (err) {
             res.status(400).json({ error: err.message });
             return;

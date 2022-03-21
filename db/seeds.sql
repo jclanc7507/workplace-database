@@ -1,9 +1,9 @@
 insert into departments (name, id)
 values
-    ('Human Resources', 1), --manager_id:5
-    ('Inbound', 2), --manager_id:6
-    ('Warehousing', 3), --manager_id:7
-    ('Outbound', 4); --manager_id:8
+    ('Human Resources', 1),
+    ('Inbound', 2),
+    ('Warehousing', 3),
+    ('Outbound', 4); 
 
 insert into roles (title, salary, department_id)
 values

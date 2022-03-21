@@ -3,13 +3,9 @@ const router = express.Router();
 const db = require('../../db/connection');
 const inputCheck = require('../../utils/inputCheck');
 
-// GET for all employees via department ID
+// GET for all employees via ID
 router.get('/employees', (req, res) => {
-    const sql = `select employees.*, departments.name
-                 as department_name
-                 from employees
-                 left join departments
-                 on employees.department_id = departments.id`;
+    const sql = `select * from employees`;
                 
     db.query(sql, (err, rows) => {
         if (err) {
@@ -19,50 +15,6 @@ router.get('/employees', (req, res) => {
         res.json({
             message: 'success',
             data: rows
-        });
-    });
-});
-
-// GET an individual employee via department ID
-router.get('/employee/:id', (req, res) => {
-    const sql = `select employee.*, department.name
-                 as department_name
-                 from employees
-                 left join departments
-                 on employees.department_id = department.id
-                 where employees.id = ?`;
-    const params = [req.params.id];
-
-    db.query(sql, params, (err, row) => {
-        if (err) {
-            res.status(400).json({ error: err.message });
-            return;
-        }
-        res.json({ 
-            message: 'success',
-            data: row
-        });
-    });
-});
-
-// GET an individual employee via manager ID
-router.get('/employee/:id', (req, res) => {
-    const sql = `select employee.*, manager.name
-                 as manager_name
-                 from employees
-                 left join managers
-                 on employees.manager_id = manager.id
-                 where employees.id = ?`;
-    const params = [req.params.id];
-
-    db.query(sql, params, (err, row) => {
-        if (err) {
-            res.status(400).json({ error: err.message });
-            return;
-        }
-        res.json({ 
-            message: 'success',
-            data: row
         });
     });
 });
@@ -130,7 +82,7 @@ router.put('/employee/:id', (req, res) => {
             res.json({
                 message: 'success',
                 data: req.body,
-                changes: results.affectedRows
+                changes: result.affectedRows
             });
         }
     });

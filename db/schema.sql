@@ -3,23 +3,22 @@ drop table if exists departments;
 drop table if exists roles;
 
 create table employees (
-    id int auto_increment primary key,
+    id int auto_increment primary key not null,
     first_name varchar(30) not null,
     last_name varchar(30) not null,
     role_id int not null,
-    manager_id int not null
+    manager_id int
 );
 
 create table departments (
-    id int auto_increment primary key,
-    name varchar(30) not null
+    id int auto_increment primary key not null,
+    name varchar(30) not null,
+    description text
 );
 
 create table roles (
-    id int auto_increment primary key,
+    id int auto_increment primary key not null,
     title varchar(30) not null,
     salary decimal not null,
-    department_id int not null
+    department_id int
 );
-
--- add constraints
