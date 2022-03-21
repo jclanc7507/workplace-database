@@ -3,12 +3,11 @@ drop table if exists departments;
 drop table if exists roles;
 
 create table employees (
-    id integer auto_increment primary key,
+    id int auto_increment primary key,
     first_name varchar(30) not null,
     last_name varchar(30) not null,
-    role_id integer not null,
-    manager_id integer not null,
-    created_at datetime default current_timestamp
+    role_id int not null,
+    manager_id int not null
 );
 
 create table departments (

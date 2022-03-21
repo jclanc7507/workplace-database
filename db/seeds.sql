@@ -1,9 +1,9 @@
 insert into departments (name, id)
 values
-    ('Human Resources', 1),
-    ('Inbound', 2),
-    ('Warehousing', 3),
-    ('Outbound', 4);
+    ('Human Resources', 1), --manager_id:5
+    ('Inbound', 2), --manager_id:6
+    ('Warehousing', 3), --manager_id:7
+    ('Outbound', 4); --manager_id:8
 
 insert into roles (title, salary, department_id)
 values
@@ -16,10 +16,10 @@ values
 
 insert into employees (first_name, last_name, role_id, manager_id)
 values
-    ('John', 'Smith', 1, 5),
-    ('Jane', 'Doe', 2, 6),
-    ('Nathaniel', 'Swift', 3, 7),
+    ('John', 'Smith', 3, 5),
+    ('Jane', 'Doe', 1, 6),
+    ('Nathaniel', 'Swift', 2, 7),
     ('Gabriel', 'Rameriaz', 4, 8),
-    ('Roe', 'Daniels', 2, 6),
-    ('David', 'Brown', 1, 5),
-    ('Jacob', 'Hempstead', 2, 6);
+    ('Roe', 'Daniels', 5, 6),
+    ('David', 'Brown', 6, 5),
+    ('Jacob', 'Hempstead', 3, 6);
