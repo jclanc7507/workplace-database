@@ -36,9 +36,8 @@ router.post('/employee', ({ body }, res) => {
         return;
     }
 
-    const sql = `insert into employees (id, first_name, last_name, role, department, salary, manager) values (?,?,?,?,?,?,?)`;
+    const sql = `insert into employees (first_name, last_name, role, department, salary, manager) values (?,?,?,?,?,?,?)`;
     const params = [
-        body.id,
         body.first_name,
         body.last_name,
         body.role,
