@@ -4,8 +4,14 @@
 
   A command-line application built to manage a company's employee database, using Node.js, Inquirer, and MySQL.
 
+  ## Screenshot
+  ![Screenshot of final product](./utils/screenshot.png)
+
   ## Deployed Link
   https://github.com/jclanc7507/workplace-database
+
+  ## Recording Link
+  https://drive.google.com/file/d/1kI3bEWHeyQRZcKAHo2mzp-EYxOiJWDy9/view
 
   ## Table of Contents
 ----------------
