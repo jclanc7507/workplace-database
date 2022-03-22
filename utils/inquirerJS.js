@@ -13,7 +13,7 @@ const message = {
     deleteDepartment: 'Delete A Department',
     deleteRole: 'Delete A Role',
     deleteEmployee: 'Delete An Employee',
-    exit: 'Finished'
+    exit: 'Finished? Press Ctrl+C'
 };
 
 const mainMenu = async () => {
@@ -221,35 +221,47 @@ function createEmployee() {
 };
 
 function updateEmployee() {
-    inquirer.prompt([
-        {
-            type: 'input',
-            name: 'id',
-            message: 'Which employee would you like to update?'
-        }
-    ])
-    .then((answer) => {
-        db.query(`select role.id, role.title from roles order by role.id;`, async (err, res) => {
-            if (err) throw err;
-            const { role } = await inquirer.prompt([
-                {
-                    title: 'list',
-                    name: 'role',
-                    message: "Which new role would you like this employee to be put into?",
-                    choices: () => res.map(res => res.title)
-                }
-            ]);
-            let role_id;
-            for (const row of res) {
-                if (row.title === role) {
-                    role_id = row.id;
-                    continue;
-                }
-            };
-            db.query(`update employee set role_id = '${role_id}' where employee.id = '${answer.id}'`, async (err, res) => {
+    let employeeSelection = []
+    let updateEmployee = `select * from employees`
+    db.query(updateEmployee, (err, data) => {
+        if (err) throw err;
+        employeeSelection = data.map(({ id, employee }) => (
+            {
+                name: employee,
+                value: id
+            }
+        ))
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'id',
+                message: 'Which employee would you like to update?',
+                choices: employeeSelection
+            }
+        ])
+        .then((answer) => {
+            db.query(`select role.id, role.title from roles order by role.id;`, async (err, res) => {
                 if (err) throw err;
-                console.log("Employee updated.");
-                mainMenu();
+                const { role } = await inquirer.prompt([
+                    {
+                        title: 'list',
+                        name: 'role',
+                        message: "Which new role would you like this employee to be put into?",
+                        choices: () => res.map(res => res.title)
+                    }
+                ]);
+                let role_id;
+                for (const row of res) {
+                    if (row.title === role) {
+                        role_id = row.id;
+                        continue;
+                    }
+                };
+                db.query(`update employee set role_id = '${role_id}' where employee.id = '${answer.id}'`, async (err, res) => {
+                    if (err) throw err;
+                    console.log("Employee updated.");
+                    mainMenu();
+                })
             })
         })
     })
@@ -275,7 +287,7 @@ function deleteDepartment() {
             }
         ])
         .then((answer) => {
-            const deleteDepartment = `delete from departments where = ('${answer.department.id}')`
+            const deleteDepartment = `delete from departments where = ('${answer.department}')`
             db.query(deleteDepartment, (err) => {
                 if (err) throw err;
                 console.log("Department deleted.");
@@ -305,7 +317,7 @@ function deleteEmployee() {
             }
         ])
         .then((answer) => {
-            const deleteEmployee = `delete from employees where = ('${answer.employee.id}')`
+            const deleteEmployee = `delete from employees where = ('${answer.employee}')`
             db.query(deleteEmployee, (err) => {
                 if (err) throw err;
                 console.log("Employee deleted.");
@@ -335,7 +347,7 @@ function deleteRole() {
             }
         ])
         .then((answer) => {
-            const deleteRole = `delete from role where = ('${answer.role.id}')`
+            const deleteRole = `delete from role where = ('${answer.role}')`
             db.query(deleteEmployee, (err) => {
                 if (err) throw err;
                 console.log("Role deleted.");
@@ -343,11 +355,6 @@ function deleteRole() {
             })
         })
     })
-};
-
-function exit() {
-    console.log("Goodbye!");
-    db.end()
 };
 
 mainMenu();
