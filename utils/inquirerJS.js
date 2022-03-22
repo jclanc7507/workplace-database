@@ -1,12 +1,6 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
-
-connection.execute(
-    'select * from department wher id = ?',
-    function(err, results, fields) {
-        if (err) throw (err);
-    }
-);
+const db = require('../db/connection');
 
 const message = {
     getDepartments: 'View All Departments',
@@ -103,7 +97,7 @@ const mainMenu = async () => {
 // functions for choices
 function getDepartments() {
     const query = `select * from departments`;
-    connection.query(query, (err, data) => {
+    db.query(query, (err, data) => {
         if (err) throw err;
         console.table(data);
         mainMenu();
@@ -112,7 +106,7 @@ function getDepartments() {
 
 function getEmployees() {
     const query = `select * from employees`;
-    connection.query(query, (err, data) => {
+    db.query(query, (err, data) => {
         if (err) throw err;
         console.table(data);
         mainMenu();
@@ -121,7 +115,7 @@ function getEmployees() {
 
 function getRoles() {
     const query = `select * from roles`;
-    connection.query(query, (err, data) => {
+    db.query(query, (err, data) => {
         if (err) throw err;
         console.table(data)
         mainMenu();
@@ -138,7 +132,7 @@ function createDepartment() {
     ])
     .then((answer) => {
         const createDepartment = `insert into departments (name) values ('${answer.department}')`
-        connection.query(createDepartment, (err) => {
+        db.query(createDepartment, (err) => {
             if (err) throw err;
             console.log("New Department created.");
             mainMenu();
@@ -149,7 +143,7 @@ function createDepartment() {
 function createRole() {
     let departmentSelection = []
     let createDepartment = `select * from departments`
-    connection.query(createDepartment, (err, data) => {
+    db.query(createDepartment, (err, data) => {
         if (err) throw err;
         departmentSelection = data.map(({ id, department }) => (
             {
@@ -176,8 +170,8 @@ function createRole() {
             }
         ])
         .then((answer) => {
-            const createRole = `insert into roles (id, title, department, salary) values ('${answer.role}', '${answer.department}', '${answer.salary}')`
-            connection.query(createRole, (err) => {
+            const createRole = `insert into roles (title, department, salary) values ('${answer.role}', '${answer.department}', '${answer.salary}')`
+            db.query(createRole, (err) => {
                 if (err) throw err;
                 console.log("New Role Created.");
                 mainMenu();
@@ -188,8 +182,8 @@ function createRole() {
 
 function createEmployee() {
     let roleChoices = [];
-    let employeeQuery = `select * from role`;
-    connection.query(employeeQuery, (err, data) => {
+    let employeeQuery = `select * from roles`;
+    db.query(employeeQuery, (err, data) => {
         if (err) throw err;
         roleChoices = data.map(({ id, title }) => (
             {
@@ -217,7 +211,7 @@ function createEmployee() {
         ])
         .then((answer) => {
             const createEmployee = `insert into employees (first_name, last_name, role) values ('${answer.first_name}', '${answer.last_name}', '${answer.role})`
-            connection.query(createEmployee, (err) => {
+            db.query(createEmployee, (err) => {
                 if (err) throw err;
                 console.log("Created new Employee.");
                 mainMenu();
@@ -235,7 +229,7 @@ function updateEmployee() {
         }
     ])
     .then((answer) => {
-        connection.query(`select role.id, role.title from roles order by role.id;`, async (err, res) => {
+        db.query(`select role.id, role.title from roles order by role.id;`, async (err, res) => {
             if (err) throw err;
             const { role } = await inquirer.prompt([
                 {
@@ -252,7 +246,7 @@ function updateEmployee() {
                     continue;
                 }
             };
-            connection.query(`update employee set role_id = '${role_id}' where employee.id = '${answer.id}'`, async (err, res) => {
+            db.query(`update employee set role_id = '${role_id}' where employee.id = '${answer.id}'`, async (err, res) => {
                 if (err) throw err;
                 console.log("Employee updated.");
                 mainMenu();
@@ -264,7 +258,7 @@ function updateEmployee() {
 function deleteDepartment() {
     let departmentSelection = []
     let deleteDepartment = `select * from departments`
-    connection.query(deleteDepartment, (err, data) => {
+    db.query(deleteDepartment, (err, data) => {
         if (err) throw err;
         departmentSelection = data.map(({ id, department }) => (
             {
@@ -282,7 +276,7 @@ function deleteDepartment() {
         ])
         .then((answer) => {
             const deleteDepartment = `delete from departments where = ('${answer.department.id}')`
-            connection.query(deleteDepartment, (err) => {
+            db.query(deleteDepartment, (err) => {
                 if (err) throw err;
                 console.log("Department deleted.");
                 mainMenu();
@@ -294,7 +288,7 @@ function deleteDepartment() {
 function deleteEmployee() {
     let employeeSelection = []
     let deleteEmployee = `select * from employees`
-    connection.query(deleteEmployee, (err, data) => {
+    db.query(deleteEmployee, (err, data) => {
         if (err) throw err;
         employeeSelection = data.map(({ id, employee }) => (
             {
@@ -312,7 +306,7 @@ function deleteEmployee() {
         ])
         .then((answer) => {
             const deleteEmployee = `delete from employees where = ('${answer.employee.id}')`
-            connection.query(deleteEmployee, (err) => {
+            db.query(deleteEmployee, (err) => {
                 if (err) throw err;
                 console.log("Employee deleted.");
                 mainMenu();
@@ -324,7 +318,7 @@ function deleteEmployee() {
 function deleteRole() {
     let roleSelection = []
     let deleteRole = `select * from roles`
-    connection.query(deleteRole, (err, data) => {
+    db.query(deleteRole, (err, data) => {
         if (err) throw err;
         roleSelection = data.map(({ id, role }) => (
             {
@@ -342,7 +336,7 @@ function deleteRole() {
         ])
         .then((answer) => {
             const deleteRole = `delete from role where = ('${answer.role.id}')`
-            connection.query(deleteEmployee, (err) => {
+            db.query(deleteEmployee, (err) => {
                 if (err) throw err;
                 console.log("Role deleted.");
                 mainMenu();
@@ -353,7 +347,7 @@ function deleteRole() {
 
 function exit() {
     console.log("Goodbye!");
-    connection.end()
+    db.end()
 };
 
 mainMenu();
