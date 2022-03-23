@@ -33,11 +33,11 @@ router.post('/role', ({ body }, res) => {
         return;
     }
 
-    const sql = `insert into roles (id, title, department, salary)`;
+    const sql = `insert into roles (id, title, departments, salary)`;
     const params = [
         body.id,
         body.title,
-        body.department,
+        body.departments,
         body.salary
     ];
 

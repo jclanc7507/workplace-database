@@ -145,10 +145,10 @@ function createRole() {
     let createDepartment = `select * from departments`
     db.query(createDepartment, (err, data) => {
         if (err) throw err;
-        departmentSelection = data.map(({ id, department }) => (
+        departmentSelection = data.map(d => (
             {
-                name: department,
-                value: id
+                name: d.name,
+                value: d.id
             }
         ))
         inquirer.prompt([
@@ -168,7 +168,7 @@ function createRole() {
                 message: 'Which department will this new role be added into?',
                 choices: departmentSelection
             }
-        ])
+        ]) 
         .then((answer) => {
             const createRole = `insert into roles (title, department, salary) values ('${answer.role}', '${answer.department}', '${answer.salary}')`
             db.query(createRole, (err) => {

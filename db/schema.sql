@@ -12,8 +12,7 @@ create table employees (
 
 create table departments (
     id int auto_increment primary key not null,
-    name varchar(30) not null,
-    description text
+    name varchar(30) not null
 );
 
 create table roles (
